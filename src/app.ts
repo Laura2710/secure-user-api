@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/health", (req: Request, res: Response) => {
-	res.status(200).json({ status: "running" });
+  res.status(200).json({ status: "running" });
 });
 
 app.use("/auth", authRouter);

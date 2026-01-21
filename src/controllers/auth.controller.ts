@@ -11,13 +11,13 @@ import { validateEmailAndPassword } from "@/validator/auth.validator";
  * @returns {Promise<void>} - A promise that resolves when the request has been handled
  */
 export const register = async (req: Request, res: Response) => {
-	const { email, password } = req.body;
-	validateEmailAndPassword(email, password);
-	const user = await createUser(email, password);
-	return res.status(201).json({
-		id: user.id,
-		email: user.email,
-	});
+  const { email, password } = req.body;
+  validateEmailAndPassword(email, password);
+  const user = await createUser(email, password);
+  return res.status(201).json({
+    id: user.id,
+    email: user.email,
+  });
 };
 
 /**
@@ -28,18 +28,18 @@ export const register = async (req: Request, res: Response) => {
  * @returns {Promise<void>} - A promise that resolves when the request has been handled
  */
 export const signIn = async (req: Request, res: Response) => {
-	const { email, password } = req.body;
-	validateEmailAndPassword(email, password);
-	const userToken = await loginUser(email, password);
-	return res.status(200).json({ token: userToken });
+  const { email, password } = req.body;
+  validateEmailAndPassword(email, password);
+  const userToken = await loginUser(email, password);
+  return res.status(200).json({ token: userToken });
 };
 
 export const whoIAm = async (req: Request, res: Response) => {
-	const userId = (req as any).userId;
-	const user = await getUser(userId);
-	return res.status(200).json({
-		message: "You are logged in",
-		id: user.id,
-		email: user.email,
-	});
+  const userId = (req as any).userId;
+  const user = await getUser(userId);
+  return res.status(200).json({
+    message: "You are logged in",
+    id: user.id,
+    email: user.email,
+  });
 };

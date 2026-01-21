@@ -2,9 +2,9 @@
 
 import * as argon2 from "argon2";
 import prisma from "../prisma/client";
-import { Prisma } from "@/generated/prisma/client";
-import { BLLError } from "@/errors/bll.error";
-import { signToken } from "@/utils/jwt";
+import { Prisma } from "@prisma/client";
+import { BLLError } from "../errors/bll.error";
+import { signToken } from "../utils/jwt";
 
 export const createUser = async (email: string, password: string) => {
 	const hashedPassword = await argon2.hash(password, {
@@ -23,10 +23,11 @@ export const createUser = async (email: string, password: string) => {
 			email: user.email,
 		};
 	} catch (error) {
-		// If the error is a PrismaClientKnownRequestError and the code is P2002, it means the user already exists
 		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2002"
+			typeof error === "object" &&
+			error !== null &&
+			"code" in error &&
+			(error as any).code === "P2002"
 		) {
 			throw new BLLError("User already exists", 409);
 		}
